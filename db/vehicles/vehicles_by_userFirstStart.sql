@@ -1,4 +1,4 @@
 SELECT * FROM vehicles 
 JOIN users
 ON vehicles.ownerId = users.id
-WHERE users.firstname LIKE $1 || '%'
+WHERE UPPER(users.firstname) LIKE UPPER($1) || '%'

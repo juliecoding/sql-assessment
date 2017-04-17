@@ -12,9 +12,6 @@ app.use(cors());
 
 var massiveUri = connString;
 
-//The test doesn't like the Sync version of connecting,
-//  Here is a skeleton of the Async, in the callback is also
-//  a good place to call your database seeds.
 var db = massive.connect({ connectionString: connString },
     function(err, localdb) {
         db = localdb;
@@ -38,15 +35,6 @@ var db = massive.connect({ connectionString: connString },
 
 
 /****** ENDPOINTS *******/
-// var end = function(err, results) {
-//     if (err) {
-//         console.error(err);
-//     } else {
-//         res.status(200).send(results);
-//     }
-// };
-
-
 app.get('/api/users', function(req, res, next) {
     db.users.read_users([], function(err, results) {
         if (err) {
@@ -117,7 +105,6 @@ app.get('/api/user/:userId/vehicle', function(req, res, next) {
     })
 });
 
-//* Create an endpoint at `GET '/api/vehicle?email=UsersEmail'` that will find all vehicles that belong to the user with the provided users Email
 app.get('/api/vehicle', function(req, res, next) {
     if (req.query.email) {
         db.vehicles.vehicles_by_email([req.query.email], function(err, results) {
@@ -140,16 +127,46 @@ app.get('/api/vehicle', function(req, res, next) {
 });
 
 
-// app.get('/api/vehicle', function(req, res, next) {
-//     db.vehicles.vehicles_by_email([req.query.email], function(err, results) {
-//         if (err) {
-//             console.error(err);
-//         } else {
-//             res.status(200).send(results);
-//         }
-//     })
-// });
+app.get('/api/newervehiclesbyyear', function(req, res, next) {
+    db.vehicles.get_newer_vehicles([], function(err, results) {
+        if (err) {
+            console.error(err);
+        } else {
+            res.status(200).send(results);
+        }
+    })
+});
 
+
+app.put('/api/vehicle/:vehicleId/user/:userId', function(req, res, next) {
+    db.vehicles.update_user([req.params.vehicleId, req.params.userId], function(err, results) {
+        if (err) {
+            console.error(err);
+        } else {
+            res.status(200).send(results);
+        }
+    })
+});
+
+app.delete('/api/user/:userId/vehicle/:vehicleId', function(req, res, next) {
+    db.vehicles.remove_user([req.params.vehicleId], function(err, results) {
+        if (err) {
+            console.error(err);
+        } else {
+            res.status(200).send(results);
+        }
+    })
+})
+
+app.delete('/api/vehicle/:vehicleId', function(req, res, next) {
+    db.vehicles.delete_vehicle([req.params.vehicleId], function(err, results) {
+        if (err) {
+            console.error(err);
+        } else {
+            res.status(200).send(results);
+        }
+    })
+});
 
 app.listen('3000', function() {
     console.log("Successfully listening on : 3000")
