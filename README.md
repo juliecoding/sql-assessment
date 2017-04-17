@@ -40,7 +40,7 @@ Mini Coup 2013 - Jane Janis
 ```
 
 ## Endpoints & Queries
-GOTCHA: It's important to know that express converts values passed into and accessed off of 'params' into strings. This might not match the data types you set in your schema and will result in errors if they don't.
+GOTCHA: It's important to know that express converts values passed into and acacessed off of 'params' into strings. This might not match the data types you set in your schema and will result in errors if they don't.
 * Create an endpoint at `GET '/api/users'` that will query the database and get all users.
 * Create an endpoint at `GET '/api/vehicles'` that will query the database and get all vehicles.
 * Create an endpoint at `POST '/api/users'` that will take a user from the body and add them to the database
